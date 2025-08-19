@@ -177,3 +177,5 @@
 /home/verpen/Code/Angular/Project_5_Todo/backend/bin/Debug/net9.0/Serilog.Sinks.Console.dll
 /home/verpen/Code/Angular/Project_5_Todo/backend/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
 /home/verpen/Code/Angular/Project_5_Todo/backend/bin/Debug/net9.0/Serilog.Sinks.File.dll
+/home/verpen/Code/Angular/Project_5_Todo/backend/obj/Debug/net9.0/backend.sourcelink.json
+/home/verpen/Code/Angular/Project_5_Todo/backend/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -1,8 +1,10 @@
+using backend.Models.DTO.UserDTO;
+
 namespace backend.Dto.AuthDto
 {
     public class LoginResponseDTO
     {
-        public User user { get; set; }
-        public string token { get; set; }
+        public UserLoggedInDTO User { get; set; }
+        public string Token { get; set; }
     }
 }

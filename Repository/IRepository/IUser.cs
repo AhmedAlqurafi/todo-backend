@@ -1,7 +1,14 @@
-public interface IUserRepository
-{
+using backend.Models.DTO.UserDTO;
 
-    Task AddUser(User user);
-    Task UpdateUser(User user);
-    Task DeleteUser(int Id);
+namespace backend.Repository.IRepository
+{
+    public interface IUserRepository
+    {
+
+        Task AddUser(User user);
+        Task UpdateUser(int Id);
+        Task<UserGetDTO> GetUserById(int Id);
+        Task<User> GetMe();
+        Task DeleteUser(int Id);
+    }
 }

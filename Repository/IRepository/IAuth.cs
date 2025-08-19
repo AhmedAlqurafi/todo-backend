@@ -5,7 +5,7 @@ namespace backend.Repository.IRepository
 {
     public interface IAuthRepository
     {
-        Task<LoginRequestDTO> Login(LoginRequestDTO loginRequestDTO);
+        Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
         Task<User> Register(RegistrationRequestDTO registrationRequestDTO);
         bool IsUniqueUser(string username);
 
