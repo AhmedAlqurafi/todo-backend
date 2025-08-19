@@ -1,4 +1,5 @@
 
+using System.IdentityModel.Tokens.Jwt;
 using backend.Models.DTO.UserDTO;
 using backend.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -40,21 +41,47 @@ namespace backend.Repository
             return userGetDTO;
         }
 
-       
 
-        public Task<User> GetMe()
+
+        public Task<UserGetDTO> GetMe(string jwtToken)
         {
-            throw new NotImplementedException();
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
+            var userId = token.Claims.First(c => c.Type == "Id").Value;
+            System.Diagnostics.Debug.WriteLine("Testing");
+            return GetUserById(int.Parse(userId));
         }
 
 
-        public Task UpdateUser(int Id)
+        public async Task UpdateUser(int Id, UserUpdateDTO userUpdateDTO)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == Id);
+
+            // TODO: Implement the login to not found user
+            var updatedUser = new User
+            {
+                Id = user.Id,
+                Password = user.Password, // Assuming password is not updated here
+                FirstName = userUpdateDTO.FirstName,
+                LastName = userUpdateDTO.LastName,
+                Username = userUpdateDTO.Username,
+                Email = userUpdateDTO.Email
+                
+            };
+            _db.Update(updatedUser);
+            await _db.SaveChangesAsync();
+
+
         }
-        public Task DeleteUser(int Id)
+        public async Task DeleteUser(int Id)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            if (user == null)
+            {
+                throw new Exception();
+            }
+
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
         }
     }
 }

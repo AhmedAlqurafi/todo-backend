@@ -28,7 +28,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    
+
     // Add security requirement
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -39,11 +39,12 @@ builder.Services.AddSwaggerGen(c =>
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
+                }, Scheme = "oauth2",
+                Name = "Bearer",
+                In  = ParameterLocation.Header
+            },new List<string>()
         }
-    });
+    }); 
 });
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

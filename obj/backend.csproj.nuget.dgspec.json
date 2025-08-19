@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/verpen/Code/Angular/Project_5_Todo/backend/backend.csproj": {}
+    "/home/verpen/Code/Angular/Project-2-Todo/todo-backend/backend.csproj": {}
   },
   "projects": {
-    "/home/verpen/Code/Angular/Project_5_Todo/backend/backend.csproj": {
+    "/home/verpen/Code/Angular/Project-2-Todo/todo-backend/backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/verpen/Code/Angular/Project_5_Todo/backend/backend.csproj",
+        "projectUniqueName": "/home/verpen/Code/Angular/Project-2-Todo/todo-backend/backend.csproj",
         "projectName": "backend",
-        "projectPath": "/home/verpen/Code/Angular/Project_5_Todo/backend/backend.csproj",
+        "projectPath": "/home/verpen/Code/Angular/Project-2-Todo/todo-backend/backend.csproj",
         "packagesPath": "/home/verpen/.nuget/packages/",
-        "outputPath": "/home/verpen/Code/Angular/Project_5_Todo/backend/obj/",
+        "outputPath": "/home/verpen/Code/Angular/Project-2-Todo/todo-backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/verpen/.nuget/NuGet/NuGet.Config"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -98,12 +98,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[9.0.7, 9.0.7]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -112,7 +106,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.108/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

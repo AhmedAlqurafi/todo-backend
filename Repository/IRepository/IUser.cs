@@ -6,9 +6,9 @@ namespace backend.Repository.IRepository
     {
 
         Task AddUser(User user);
-        Task UpdateUser(int Id);
+        Task UpdateUser(int Id, UserUpdateDTO userUpdateDTO);
         Task<UserGetDTO> GetUserById(int Id);
-        Task<User> GetMe();
+        Task<UserGetDTO> GetMe(string jwtToken);
         Task DeleteUser(int Id);
     }
 }

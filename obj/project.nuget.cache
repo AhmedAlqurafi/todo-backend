@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9z3C3WRJTu0=",
+  "dgSpecHash": "QL620KukyeQ=",
   "success": true,
-  "projectFilePath": "/home/verpen/Code/Angular/Project_5_Todo/backend/backend.csproj",
+  "projectFilePath": "/home/verpen/Code/Angular/Project-2-Todo/todo-backend/backend.csproj",
   "expectedPackageFiles": [
     "/home/verpen/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/home/verpen/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -101,8 +101,7 @@
     "/home/verpen/.nuget/packages/system.text.json/9.0.8/system.text.json.9.0.8.nupkg.sha512",
     "/home/verpen/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
     "/home/verpen/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "/home/verpen/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
-    "/home/verpen/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.7/microsoft.aspnetcore.app.ref.9.0.7.nupkg.sha512"
+    "/home/verpen/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
