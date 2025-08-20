@@ -36,19 +36,27 @@ namespace backend.Repository
                 LastName = user.LastName,
                 Username = user.Username,
                 Email = user.Email
-            }; 
+            };
 
             return userGetDTO;
         }
 
-
-
-        public Task<UserGetDTO> GetMe(string jwtToken)
+        public async Task<UserGetDTO> GetMe(int Id)
         {
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
-            var userId = token.Claims.First(c => c.Type == "Id").Value;
-            System.Diagnostics.Debug.WriteLine("Testing");
-            return GetUserById(int.Parse(userId));
+            // var token = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
+            // var userId = token.Claims.First(c => c.Type == "Id").Value;
+            // System.Diagnostics.Debug.WriteLine("Testing");
+            // return GetUserById(int.Parse(userId));
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            UserGetDTO userGetDTO = new()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
+            };
+            return userGetDTO;
         }
 
 
@@ -65,7 +73,7 @@ namespace backend.Repository
                 LastName = userUpdateDTO.LastName,
                 Username = userUpdateDTO.Username,
                 Email = userUpdateDTO.Email
-                
+
             };
             _db.Update(updatedUser);
             await _db.SaveChangesAsync();
@@ -82,6 +90,16 @@ namespace backend.Repository
 
             _db.Users.Remove(user);
             await _db.SaveChangesAsync();
+        }
+
+        public Task ChangePassword(int Id, string currentPassword, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateProfile(int Id, string profileImg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

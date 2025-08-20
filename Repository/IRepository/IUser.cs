@@ -8,7 +8,10 @@ namespace backend.Repository.IRepository
         Task AddUser(User user);
         Task UpdateUser(int Id, UserUpdateDTO userUpdateDTO);
         Task<UserGetDTO> GetUserById(int Id);
-        Task<UserGetDTO> GetMe(string jwtToken);
+        Task<UserGetDTO> GetMe(int Id);
+        Task ChangePassword(int Id, string currentPassword, string newPassword);
+        Task UpdateProfile(int Id, string profileImg);
         Task DeleteUser(int Id);
+
     }
 }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using backend.Models.DTO.UserDTO;
 using backend.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -5,16 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
     public class UserAPIController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
+        private readonly ILogger<UserAPIController> _logger;
         ApplicationDbContext _db;
-        public UserAPIController(IUserRepository userRepo, ApplicationDbContext db)
+        public UserAPIController(IUserRepository userRepo, ILogger<UserAPIController> logger, ApplicationDbContext db)
         {
             _userRepo = userRepo;
             _db = db;
+            _logger = logger;
         }
 
         [HttpGet("blah")]
@@ -27,10 +30,28 @@ namespace backend.Controllers
         [HttpGet("me")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetMe()
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetMe()
         {
-            // _userRepo.GetMe(jwtToken);
-            return Ok("BBB");
+            try
+            {
+                // Extract user ID from JWT token claims
+                var userIdClaim = User.Identity?.Name;
+                if (userIdClaim == null)
+                {
+                    return Unauthorized("User ID not found in token");
+                }
+
+                // Get user data from repository
+                var user = await _userRepo.GetMe(Int32.Parse(userIdClaim));
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user information");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
 
@@ -95,6 +116,6 @@ namespace backend.Controllers
 
             return Ok();
         }
-        
+
     }
 }

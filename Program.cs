@@ -17,15 +17,17 @@ builder.Logging.AddFilter("Microsoft", LogLevel.Debug);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
 {
-      c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-    
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo API", Version = "v1" });
+
     // Add security definition
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
+        // Type = SecuritySchemeType.ApiKey,
+        BearerFormat = "JWT",
         Scheme = "Bearer"
     });
 
@@ -44,7 +46,7 @@ builder.Services.AddSwaggerGen(c =>
                 In  = ParameterLocation.Header
             },new List<string>()
         }
-    }); 
+    });
 });
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
