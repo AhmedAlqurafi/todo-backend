@@ -50,6 +50,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 var key = builder.Configuration.GetValue<string>("AppSettings:Secret");
 builder.Services.AddAuthentication(x =>

@@ -9,23 +9,23 @@ public class Todo
 
     public int UserId { get; set; }
 
-    [ForeignKey("UserId")]
-    public User User { get; set; }
+    // [ForeignKey("UserId")]
+    // public User User { get; set; }
 
     public string Title { get; set; } = "";
     public string Details { get; set; } = "";
 
     public int PriorityId { get; set; }
-    [ForeignKey("PriorityId")]
-    public Priority Priority { get; set; }
+    // [ForeignKey("PriorityId")]
+    // public Priority Priority { get; set; }
 
     public int StatusId { get; set; }
-    [ForeignKey("StatusId")]
-    public Status Status { get; set; }
+    // [ForeignKey("StatusId")]
+    // public Status Status { get; set; }
 
-   public int CategoryId { get; set; } 
-    [ForeignKey("CategoryId")]
-    public Category Category { get; set; }
+    public int CategoryId { get; set; }
+    // [ForeignKey("CategoryId")]
+    // public Category Category { get; set; }
 
     public string? ImageURL { get; set; }
     public DateTime Deadline { get; set; }

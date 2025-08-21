@@ -42,13 +42,13 @@ namespace backend.Repository
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
-            var user =await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == loginRequestDTO.Username.ToLower() && u.Password == loginRequestDTO.Password);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == loginRequestDTO.Username.ToLower() && u.Password == loginRequestDTO.Password);
 
             // Needs imporevement here
-            if (user == null)
-            {
-                return null;
-            }
+            // if (user == null)
+            // {
+            //     return null;
+            // }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -73,13 +73,13 @@ namespace backend.Repository
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Username = user.Username,
-                    Email = user.Email 
+                    Email = user.Email
                 }
                 // Token = tokenHandler.WriteToken(token),
                 //  = new User
                 // {
                 //     
-            
+
             };
 
             return loginResponseDTO;

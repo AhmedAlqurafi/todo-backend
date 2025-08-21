@@ -12,11 +12,9 @@ namespace backend.Controllers
     {
         private readonly IUserRepository _userRepo;
         private readonly ILogger<UserAPIController> _logger;
-        ApplicationDbContext _db;
-        public UserAPIController(IUserRepository userRepo, ILogger<UserAPIController> logger, ApplicationDbContext db)
+        public UserAPIController(IUserRepository userRepo, ILogger<UserAPIController> logger)
         {
             _userRepo = userRepo;
-            _db = db;
             _logger = logger;
         }
 
