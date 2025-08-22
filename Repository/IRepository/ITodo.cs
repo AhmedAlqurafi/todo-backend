@@ -5,9 +5,11 @@ namespace backend.Repository.IRepository
 {
     public interface ITodoRepository
     {
+        public Task<List<TodoGetDTO>> GetAllTodos();
+        public Task<List<TodoGetDTO>> GetMyTodos(int userId);
+        public Task<List<TodoGetDTO>> GetUserTodos(int userId);
+        public Task<TodoGetDTO> GetTodoById(int todoId);
         public Task CreateTodo(TodoCreateDTO todoCreateDTO, int userId);
-        public Task<List<TodoGetDTO>> GetAllTodo();
-        public Task<TodoGetDTO> GetTodo(int Id);
         public Task UpdateTodo(TodoUpdateDTO todoDTO);
         public Task DeleteTodo(int Id);
 

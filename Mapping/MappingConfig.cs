@@ -10,7 +10,9 @@ namespace backend
         public MappingConfig()
         {
             CreateMap<RegistrationRequestDTO, User>();
+            CreateMap<Todo, TodoGetDTO>();
             // CreateMap<TodoCreateDTO, TodoDTO>();
+
         }
     }
 }

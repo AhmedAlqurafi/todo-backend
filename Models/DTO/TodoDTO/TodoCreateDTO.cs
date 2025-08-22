@@ -15,8 +15,6 @@ namespace backend.Models.DTO.TodoDTO
         [Required]
         public string PriorityName { get; set; } = ""; // Added for better client consumption
         [Required]
-        public string StatusName { get; set; } = ""; // Added for better client consumption
-        [Required]
         public string CategoryName { get; set; } = ""; // Added for better client consumption
         public string? ImageURL { get; set; }
         [Required]
