@@ -8,5 +8,7 @@ public class CategoryDTO
     public int Id { get; set; }
     [Required]
     [MaxLength(20)]
-    public string CategoryName { get; set; }
+    public string CategoryName { get; set; } = string.Empty;
+    [Required]
+    public int UserId { get; set; }
 }
