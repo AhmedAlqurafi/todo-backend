@@ -15,6 +15,17 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddOpenApi();
 builder.Logging.AddFilter("Microsoft", LogLevel.Debug);
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+    }
+    );
+});
+
+
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo API", Version = "v1" });
@@ -88,6 +99,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseRouting();
+app.UseCors("AllowAngularApp");
 app.UseAuthentication();
 app.UseAuthorization(); // If using authentication
 app.MapControllers();

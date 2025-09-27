@@ -45,6 +45,7 @@ namespace backend.Repository
         {
             var cat = await _db.Categories.AsNoTracking().FirstOrDefaultAsync(u => u.Id == Id);
             cat.CategoryName = categoryUpdateDTO.CategoryName;
+            cat.UpdatedAt = DateTime.Now;
             _db.Update(cat);
             await _db.SaveChangesAsync();
         }
@@ -54,6 +55,6 @@ namespace backend.Repository
             var cat = await _db.Categories.FirstOrDefaultAsync(u => u.Id == Id);
             _db.Remove(cat);
             await _db.SaveChangesAsync();
-    }
+        }
     }
 }

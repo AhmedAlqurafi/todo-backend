@@ -30,9 +30,10 @@ namespace backend.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
-         {
+        {
 
-            if (loginRequestDTO.Username == null || loginRequestDTO.Password == null) {
+            if (loginRequestDTO.Username == null || loginRequestDTO.Password == null)
+            {
                 return BadRequest("No nulls");
             }
             LoginResponseDTO response = await _authRepo.Login(loginRequestDTO);
@@ -57,8 +58,9 @@ namespace backend.Controllers
             var isUnique = _authRepo.IsUniqueUser(registerDTO.Username);
             if (isUnique && isPasswordConfirmed)
             {
-               User user = await _authRepo.Register(registerDTO);
-               return Ok(user);
+                //TODO: Change LoginResponseDTO to RegisterResponseDTO
+                LoginResponseDTO user = await _authRepo.Register(registerDTO);
+                return Ok(user);
             }
             else
             {

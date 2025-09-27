@@ -75,24 +75,51 @@ namespace backend.Repository
                     Username = user.Username,
                     Email = user.Email
                 }
-                // Token = tokenHandler.WriteToken(token),
-                //  = new User
-                // {
-                //     
-
             };
 
             return loginResponseDTO;
 
         }
 
-        public async Task<User> Register(RegistrationRequestDTO registrationRequestDTO)
+        //TODO: Change LoginResponseDTO to RegisterResponseDTO
+        public async Task<LoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO)
         {
             _logger.LogInformation("Repo");
             User user = _mapper.Map<User>(registrationRequestDTO);
             await _db.AddAsync(user);
             await _db.SaveChangesAsync();
-            return user;
+
+            // Return token
+            // var registeredUser = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == user.Username.ToLower());
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            LoginResponseDTO loginResponseDTO = new LoginResponseDTO()
+            {
+                Token = tokenHandler.WriteToken(token),
+                User = new UserLoggedInDTO()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.Username,
+                    Email = user.Email
+                }
+            };
+
+            return loginResponseDTO;
         }
     }
 }
