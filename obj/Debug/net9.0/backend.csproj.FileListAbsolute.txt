@@ -177,3 +177,4 @@
 /home/verpen/Code/Angular/Project_5_Todo/backend/obj/Debug/net9.0/backend.pdb
 /home/verpen/Code/Angular/Project_5_Todo/backend/obj/Debug/net9.0/backend.genruntimeconfig.cache
 /home/verpen/Code/Angular/Project_5_Todo/backend/obj/Debug/net9.0/ref/backend.dll
+/home/verpen/Code/Angular/Project_5_Todo/backend/bin/Debug/net9.0/BCrypt.Net-Next.dll

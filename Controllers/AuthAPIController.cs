@@ -1,4 +1,6 @@
+using System.Net;
 using backend.Dto.AuthDto;
+using backend.Models;
 using backend.Models.DTO.AuthDto;
 using backend.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +13,12 @@ namespace backend.Controllers
     public class AuthAPIControllers : ControllerBase
     {
         private readonly IAuthRepository _authRepo;
-        private readonly ILogger<AuthAPIControllers> _logger;
+        protected APIResponse _response;
 
-        public AuthAPIControllers(IAuthRepository authRepo, ILogger<AuthAPIControllers> logger)
+        public AuthAPIControllers(IAuthRepository authRepo)
         {
             _authRepo = authRepo;
-            _logger = logger;
+            this._response = new();
         }
 
         [HttpGet("blah")]
@@ -31,41 +33,77 @@ namespace backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
-
-            if (loginRequestDTO.Username == null || loginRequestDTO.Password == null)
+            // Check if username or password is empty
+            if (string.IsNullOrEmpty(loginRequestDTO.Username) || string.IsNullOrEmpty(loginRequestDTO.Password))
             {
-                return BadRequest("No nulls");
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("Username and Password are required");
+                return BadRequest(_response);
             }
-            LoginResponseDTO response = await _authRepo.Login(loginRequestDTO);
 
-            return Ok(response);
+            LoginResponseDTO response = await _authRepo.Login(loginRequestDTO);
+            if (response.User == null || string.IsNullOrEmpty(response.Token))
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("Username or Password is incorrect");
+                return BadRequest(_response);
+            }
+
+            _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
+            _response.Result = response;
+            return Ok(_response);
         }
+
+
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO registerDTO)
         {
+            List<string> reservedUsernames = ["admin", "administration", "administrator", "system", "root"];
+
+            if (reservedUsernames.Contains(registerDTO.Username.ToLower()))
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("Account with this Username or Email already exists.");
+                return BadRequest(_response);
+            }
+            if (registerDTO.Username.Length < 6 || registerDTO.Username.Length > 20)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("Username should be between 6 and 20 characters");
+                return BadRequest(_response);
+            }
+
             // Check if password field equalls confirm password field
             var isPasswordConfirmed = registerDTO.Password == registerDTO.ConfirmPassword ? true : false;
 
             if (!isPasswordConfirmed)
             {
-                return BadRequest("Password and Confirmed password does not match");
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("Password and Confirm Password does not match");
+                return BadRequest(_response);
             }
 
-            // Check if username not used
-            var isUnique = _authRepo.IsUniqueUser(registerDTO.Username);
-            if (isUnique && isPasswordConfirmed)
+            // Check if username or email is used or not
+            var isUnique = _authRepo.IsUniqueUser(registerDTO);
+            if (!isUnique)
             {
-                //TODO: Change LoginResponseDTO to RegisterResponseDTO
-                LoginResponseDTO user = await _authRepo.Register(registerDTO);
-                return Ok(user);
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("Account with this Username or Email already exists.");
+                return BadRequest(_response);
             }
-            else
-            {
-                return BadRequest();
-            }
+
+            RegistrationResponseDTO user = await _authRepo.Register(registerDTO);
+            return Ok(user);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using backend.Dto.AuthDto;
 using backend.Models.DTO.AuthDto;
@@ -9,7 +10,6 @@ using backend.Models.DTO.UserDTO;
 using backend.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 namespace backend.Repository
 {
 
@@ -18,7 +18,7 @@ namespace backend.Repository
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthRepository> _logger;
-        private string secretKey;
+        private string? secretKey;
         public AuthRepository(ApplicationDbContext db, IMapper mapper, ILogger<AuthRepository> logger, IConfiguration conf)
         {
             _db = db;
@@ -27,9 +27,10 @@ namespace backend.Repository
             secretKey = conf.GetValue<string>("AppSettings:Secret");
         }
 
-        public bool IsUniqueUser(string username)
+        public bool IsUniqueUser(RegistrationRequestDTO registrationRequestDTO)
         {
-            User user = _db.Users.FirstOrDefault(user => user.Username == username);
+            User? user = _db.Users.FirstOrDefault(user => user.Username.ToLower() == registrationRequestDTO.Username.ToLower() || user.Email == registrationRequestDTO.Email);
+
             if (user == null)
             {
                 return true;
@@ -42,13 +43,17 @@ namespace backend.Repository
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == loginRequestDTO.Username.ToLower() && u.Password == loginRequestDTO.Password);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == loginRequestDTO.Username.ToLower());
 
-            // Needs imporevement here
-            // if (user == null)
-            // {
-            //     return null;
-            // }
+            // No user found
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequestDTO.Password, user.Password))
+            {
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = null
+                };
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -81,16 +86,17 @@ namespace backend.Repository
 
         }
 
-        //TODO: Change LoginResponseDTO to RegisterResponseDTO
-        public async Task<LoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO)
+        //TODO: Check token generation method.
+        //TODO: Implement a token generator method
+        public async Task<RegistrationResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO)
         {
             _logger.LogInformation("Repo");
             User user = _mapper.Map<User>(registrationRequestDTO);
+            user.Username = user.Username.ToLower().Trim();
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, 12);
+
             await _db.AddAsync(user);
             await _db.SaveChangesAsync();
-
-            // Return token
-            // var registeredUser = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == user.Username.ToLower());
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -106,7 +112,7 @@ namespace backend.Repository
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            LoginResponseDTO loginResponseDTO = new LoginResponseDTO()
+            RegistrationResponseDTO responseDTO = new RegistrationResponseDTO()
             {
                 Token = tokenHandler.WriteToken(token),
                 User = new UserLoggedInDTO()
@@ -119,7 +125,7 @@ namespace backend.Repository
                 }
             };
 
-            return loginResponseDTO;
+            return responseDTO;
         }
     }
 }
