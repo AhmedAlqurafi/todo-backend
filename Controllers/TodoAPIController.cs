@@ -61,24 +61,27 @@ namespace backend.Controllers
             return Ok(todos);
         }
         [HttpPost]
-        // [Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateTodo(TodoCreateDTO todoCreateDTO)
         {
+            try
+            {
+                var userIdClaim = User.Identity?.Name;
+                if (userIdClaim == null)
+                {
+                    return Unauthorized();
+                }
 
-
-            // var userId = User.Identity?.Name;
-            // if (userId == null)
-            // {
-            //     return Unauthorized("User Id not found");
-            // }
-
-            await _todoRepo.CreateTodo(todoCreateDTO, Int32.Parse("1"));
-
-
-            return Created();
+                TodoGetDTO todo = await _todoRepo.CreateTodo(todoCreateDTO, Int32.Parse(userIdClaim));
+                return Ok(todo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }

@@ -13,9 +13,9 @@ namespace backend.Models.DTO.TodoDTO
         [Required]
         public string Details { get; set; } = "";
         [Required]
-        public string PriorityName { get; set; } = ""; // Added for better client consumption
+        public int PriorityId { get; set; }
         [Required]
-        public string CategoryName { get; set; } = ""; // Added for better client consumption
+        public int CategoryId { get; set; }
         public string? ImageURL { get; set; }
         [Required]
         public DateTime Deadline { get; set; }

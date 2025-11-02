@@ -45,18 +45,17 @@ namespace backend.Repository
             return _mapper.Map<List<TodoGetDTO>>(todos);
         }
 
-        public async Task CreateTodo(TodoCreateDTO todo, int userId)
+        public async Task<TodoGetDTO> CreateTodo(TodoCreateDTO todo, int userId)
         {
-            var priorityId = todo.PriorityName == "High" ? 1 : todo.PriorityName == "Moderate" ? 2 : 1;
 
             Todo newTodo = new()
             {
                 UserId = userId,
                 Title = todo.Title,
                 Details = todo.Details,
-                PriorityId = priorityId,
+                PriorityId = todo.PriorityId,
                 StatusId = 1,
-                CategoryId = 1,
+                CategoryId = todo.CategoryId,
                 ImageURL = todo.ImageURL,
                 Deadline = todo.Deadline,
                 CreatedAt = DateTime.Now,
@@ -65,6 +64,9 @@ namespace backend.Repository
 
             await _db.Todos.AddAsync(newTodo);
             await _db.SaveChangesAsync();
+
+            return _mapper.Map<TodoGetDTO>(newTodo);
+
         }
         public Task UpdateTodo(TodoUpdateDTO todoDTO)
         {

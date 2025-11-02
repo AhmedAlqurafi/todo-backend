@@ -9,7 +9,7 @@ namespace backend.Repository.IRepository
         public Task<List<TodoGetDTO>> GetMyTodos(int userId);
         public Task<List<TodoGetDTO>> GetUserTodos(int userId);
         public Task<TodoGetDTO> GetTodoById(int todoId);
-        public Task CreateTodo(TodoCreateDTO todoCreateDTO, int userId);
+        public Task<TodoGetDTO> CreateTodo(TodoCreateDTO todoCreateDTO, int userId);
         public Task UpdateTodo(TodoUpdateDTO todoDTO);
         public Task DeleteTodo(int Id);
 
