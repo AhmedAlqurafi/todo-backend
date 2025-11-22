@@ -36,6 +36,12 @@ namespace backend.Repository
         public async Task<TodoGetDTO> GetTodoById(int Id)
         {
             var todo = await _db.Todos.FirstOrDefaultAsync(todo => todo.Id == Id);
+
+            if (todo == null)
+            {
+                return null!;
+            }
+
             return _mapper.Map<TodoGetDTO>(todo);
         }
 

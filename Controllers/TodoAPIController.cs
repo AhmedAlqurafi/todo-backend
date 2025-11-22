@@ -38,15 +38,28 @@ namespace backend.Controllers
                 return Unauthorized();
             }
             var todos = await _todoRepo.GetMyTodos(Int32.Parse(userId));
+
+
             return Ok(todos);
         }
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetTodoById(int todoId)
+        public async Task<IActionResult> GetTodoById(int id)
         {
-            var todo = await _todoRepo.GetTodoById(todoId);
+            // TODO: Prevent getting todo from other users
+            var userId = User.Identity?.Name;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var todo = await _todoRepo.GetTodoById(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
             return Ok(todo);
         }
 

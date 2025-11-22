@@ -13,5 +13,6 @@ namespace backend.Models.DTO.TodoDTO
         public int CategoryId { get; set; } // Changed from Category to int
         public string? ImageURL { get; set; }
         public DateTime Deadline { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
