@@ -13,6 +13,9 @@ namespace backend.Repository.IRepository
         public Task UpdateTodo(TodoUpdateDTO todoDTO);
         public Task DeleteTodo(int Id);
 
+        public Task<TodoGetDTO> UpdateStatusToInProgress(int Id);
+        public Task UpdateStatusToCompleted(int Id);
+
         /*  
   // Filtering and searching
     Task<IEnumerable<TodoDTO>> GetByUserIdAsync(int userId);

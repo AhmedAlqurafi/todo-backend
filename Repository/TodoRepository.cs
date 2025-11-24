@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using AutoMapper;
 using backend.Migrations.DTO;
 using backend.Models.DTO.TodoDTO;
@@ -83,6 +85,36 @@ namespace backend.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<TodoGetDTO> UpdateStatusToInProgress(int Id)
+        {
+            var todo = await _db.Todos.FirstOrDefaultAsync(todo => todo.Id == Id);
 
+            if (todo == null)
+            {
+                return null!;
+            }
+
+            Todo updatedTodo = new()
+            {
+                UserId = todo.UserId,
+                Title = todo.Title,
+                Details = todo.Details,
+                PriorityId = todo.PriorityId,
+                StatusId = 2, // Updated 
+                CategoryId = todo.CategoryId,
+                ImageURL = todo.ImageURL,
+                Deadline = todo.Deadline,
+                CreatedAt = todo.CreatedAt,
+                UpdatedAt = DateTime.Now
+            };
+
+            await _db.SaveChangesAsync();
+            return _mapper.Map<TodoGetDTO>(updatedTodo);
+        }
+
+        public Task UpdateStatusToCompleted(int Id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
