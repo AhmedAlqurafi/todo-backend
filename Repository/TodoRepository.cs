@@ -87,7 +87,7 @@ namespace backend.Repository
 
         public async Task<TodoGetDTO> UpdateStatusToInProgress(int Id)
         {
-            var todo = await _db.Todos.FirstOrDefaultAsync(todo => todo.Id == Id);
+            var todo = await _db.Todos.AsNoTracking().FirstOrDefaultAsync(todo => todo.Id == Id);
 
             if (todo == null)
             {
@@ -96,6 +96,7 @@ namespace backend.Repository
 
             Todo updatedTodo = new()
             {
+                Id = todo.Id,
                 UserId = todo.UserId,
                 Title = todo.Title,
                 Details = todo.Details,
@@ -107,7 +108,7 @@ namespace backend.Repository
                 CreatedAt = todo.CreatedAt,
                 UpdatedAt = DateTime.Now
             };
-
+            _db.Update(updatedTodo);
             await _db.SaveChangesAsync();
             return _mapper.Map<TodoGetDTO>(updatedTodo);
         }
