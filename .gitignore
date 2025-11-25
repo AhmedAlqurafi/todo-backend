@@ -1,1 +1,7 @@
 appsettings.json
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
