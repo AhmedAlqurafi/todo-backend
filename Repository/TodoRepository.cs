@@ -80,9 +80,18 @@ namespace backend.Repository
         {
             throw new NotImplementedException();
         }
-        public Task DeleteTodo(int Id)
+        public async Task<bool> DeleteTodo(int Id)
         {
-            throw new NotImplementedException();
+            var todo = await _db.Todos.FirstOrDefaultAsync(todo => todo.Id == Id);
+
+            if (todo == null)
+            {
+                return false;
+            }
+
+            _db.Remove(todo);
+            await _db.SaveChangesAsync();
+            return true;
         }
 
         public async Task<TodoGetDTO> UpdateStatusToInProgress(int Id)

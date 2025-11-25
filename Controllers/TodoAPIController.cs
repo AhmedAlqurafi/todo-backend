@@ -97,6 +97,27 @@ namespace backend.Controllers
             }
         }
 
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteTodo(int id)
+        {
+            var userIdClaim = User.Identity?.Name;
+
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var result = await _todoRepo.DeleteTodo(id);
+            if (result == false)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
         [HttpPost("{id:int}/update-status")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
