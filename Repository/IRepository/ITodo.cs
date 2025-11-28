@@ -14,7 +14,7 @@ namespace backend.Repository.IRepository
         public Task<bool> DeleteTodo(int Id);
 
         public Task<TodoGetDTO> UpdateStatusToInProgress(int Id);
-        public Task UpdateStatusToCompleted(int Id);
+        public Task<TodoGetDTO> UpdateStatusToCompleted(int Id);
 
         /*  
   // Filtering and searching

@@ -135,5 +135,23 @@ namespace backend.Controllers
                 return Ok(res);
             }
         }
+
+        [HttpPost("{id:int}/completed")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateStatusToCompleted(int id)
+        {
+
+            //TODO: Add validation on the token, such as: Expiration and token belonging to the user
+            var res = await _todoRepo.UpdateStatusToCompleted(id);
+            if (res == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(res);
+            }
+        }
     }
 }

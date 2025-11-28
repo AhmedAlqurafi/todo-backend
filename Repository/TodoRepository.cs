@@ -122,9 +122,33 @@ namespace backend.Repository
             return _mapper.Map<TodoGetDTO>(updatedTodo);
         }
 
-        public Task UpdateStatusToCompleted(int Id)
+        public async Task<TodoGetDTO> UpdateStatusToCompleted(int Id)
         {
-            throw new NotImplementedException();
+
+            var todo = await _db.Todos.AsNoTracking().FirstOrDefaultAsync(todo => todo.Id == Id);
+
+            if (todo == null)
+            {
+                return null!;
+            }
+
+            Todo updatedTodo = new()
+            {
+                Id = todo.Id,
+                UserId = todo.UserId,
+                Title = todo.Title,
+                Details = todo.Details,
+                PriorityId = todo.PriorityId,
+                StatusId = 3, // Updated 
+                CategoryId = todo.CategoryId,
+                ImageURL = todo.ImageURL,
+                Deadline = todo.Deadline,
+                CreatedAt = todo.CreatedAt,
+                UpdatedAt = DateTime.Now
+            };
+            _db.Update(updatedTodo);
+            await _db.SaveChangesAsync();
+            return _mapper.Map<TodoGetDTO>(updatedTodo);
         }
     }
 }
