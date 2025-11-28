@@ -150,5 +150,17 @@ namespace backend.Repository
             await _db.SaveChangesAsync();
             return _mapper.Map<TodoGetDTO>(updatedTodo);
         }
+
+        public async Task<List<TodoGetDTO>> GetCompletedTodos()
+        {
+            var todos = await _db.Todos.Where(todos => todos.StatusId == 3).ToListAsync();
+            return _mapper.Map<List<TodoGetDTO>>(todos);
+        }
+
+        public async Task<List<TodoGetDTO>> GetInProgresssTodos()
+        {
+            var todos = await _db.Todos.Where(todos => todos.StatusId == 2).ToListAsync();
+            return _mapper.Map<List<TodoGetDTO>>(todos);
+        }
     }
 }

@@ -15,11 +15,11 @@ namespace backend.Repository.IRepository
 
         public Task<TodoGetDTO> UpdateStatusToInProgress(int Id);
         public Task<TodoGetDTO> UpdateStatusToCompleted(int Id);
-
+        public Task<List<TodoGetDTO>> GetCompletedTodos();
+        public Task<List<TodoGetDTO>> GetInProgresssTodos();
         /*  
   // Filtering and searching
     Task<IEnumerable<TodoDTO>> GetByUserIdAsync(int userId);
-    Task<IEnumerable<TodoDTO>> GetByStatusAsync(int statusId);
     Task<IEnumerable<TodoDTO>> GetByPriorityAsync(int priorityId);
     Task<IEnumerable<TodoDTO>> GetByCategoryAsync(int categoryId);
     Task<IEnumerable<TodoDTO>> SearchAsync(string searchTerm);

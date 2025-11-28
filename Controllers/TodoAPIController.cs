@@ -153,5 +153,27 @@ namespace backend.Controllers
                 return Ok(res);
             }
         }
+
+        [HttpGet("getInProgressTodos")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetInProgressTodos()
+        {
+            var userId = User.Identity?.Name;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            var todos = await _todoRepo.GetInProgresssTodos();
+            return Ok(todos);
+        }
+
+        [HttpGet("getCompletedTodos")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCompletedTodos()
+        {
+            var todos = await _todoRepo.GetCompletedTodos();
+            return Ok(todos);
+        }
     }
 }
