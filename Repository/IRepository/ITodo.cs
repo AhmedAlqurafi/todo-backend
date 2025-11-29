@@ -1,5 +1,6 @@
 using backend.Migrations.DTO;
 using backend.Models.DTO.TodoDTO;
+using backend.Models.StatisticsDTO;
 
 namespace backend.Repository.IRepository
 {
@@ -15,8 +16,10 @@ namespace backend.Repository.IRepository
 
         public Task<TodoGetDTO> UpdateStatusToInProgress(int Id);
         public Task<TodoGetDTO> UpdateStatusToCompleted(int Id);
-        public Task<List<TodoGetDTO>> GetCompletedTodos();
-        public Task<List<TodoGetDTO>> GetInProgresssTodos();
+        public Task<List<TodoGetDTO>> GetCompletedTodos(int UserId);
+        public Task<List<TodoGetDTO>> GetInProgresssTodos(int UserId);
+        public Task<StatisticsDTO[]> GetTodoStatistics(int UserId);
+
         /*  
   // Filtering and searching
     Task<IEnumerable<TodoDTO>> GetByUserIdAsync(int userId);

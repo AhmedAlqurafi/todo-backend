@@ -1,11 +1,9 @@
-using System.ComponentModel;
-using System.Diagnostics;
 using AutoMapper;
-using backend.Migrations.DTO;
 using backend.Models.DTO.TodoDTO;
+using backend.Models.StatisticsDTO;
 using backend.Repository.IRepository;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Update;
 
 namespace backend.Repository
 {
@@ -151,16 +149,65 @@ namespace backend.Repository
             return _mapper.Map<TodoGetDTO>(updatedTodo);
         }
 
-        public async Task<List<TodoGetDTO>> GetCompletedTodos()
+        public async Task<List<TodoGetDTO>> GetCompletedTodos(int UserId)
         {
-            var todos = await _db.Todos.Where(todos => todos.StatusId == 3).ToListAsync();
+            var todos = await _db.Todos.Where(todos => todos.UserId == UserId && todos.StatusId == 3).ToListAsync();
             return _mapper.Map<List<TodoGetDTO>>(todos);
         }
 
-        public async Task<List<TodoGetDTO>> GetInProgresssTodos()
+        public async Task<List<TodoGetDTO>> GetInProgresssTodos(int UserId)
         {
-            var todos = await _db.Todos.Where(todos => todos.StatusId == 2).ToListAsync();
+            var todos = await _db.Todos.Where(todos => todos.UserId == UserId && todos.StatusId == 2).ToListAsync();
             return _mapper.Map<List<TodoGetDTO>>(todos);
+        }
+
+        public async Task<StatisticsDTO[]> GetTodoStatistics(int UserId)
+        {
+            var todos = await _db.Todos.Where(todo => todo.UserId == UserId).ToListAsync();
+
+            var notStarted = 0;
+            var inProgress = 0;
+            var completed = 0;
+            var totalTodos = todos.Count();
+
+            foreach (var todo in todos)
+            {
+                switch (todo.StatusId)
+                {
+                    case 1:
+                        notStarted++;
+                        break;
+
+                    case 2:
+                        inProgress++;
+                        break;
+
+                    case 3:
+                        completed++;
+                        break;
+                }
+            }
+
+            var statistics = new StatisticsDTO[]
+            {
+                new StatisticsDTO
+                {
+                   type = "Not Started",
+                   percentage = (int)Math.Round((float)notStarted / totalTodos * 100)
+                },
+                new StatisticsDTO
+                {
+                   type = "In-Progress",
+                   percentage = (int)Math.Round((float)inProgress/ totalTodos * 100)
+                },
+                new StatisticsDTO
+                {
+                   type = "Completed",
+                   percentage = (int)Math.Round((float)completed/ totalTodos * 100)
+                },
+            };
+
+            return statistics;
         }
     }
 }

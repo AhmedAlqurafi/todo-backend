@@ -164,16 +164,39 @@ namespace backend.Controllers
             {
                 return Unauthorized();
             }
-            var todos = await _todoRepo.GetInProgresssTodos();
+            var todos = await _todoRepo.GetInProgresssTodos(Int32.Parse(userId));
             return Ok(todos);
         }
 
         [HttpGet("getCompletedTodos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetCompletedTodos()
         {
-            var todos = await _todoRepo.GetCompletedTodos();
+            var userId = User.Identity?.Name;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            var todos = await _todoRepo.GetCompletedTodos(Int32.Parse(userId));
             return Ok(todos);
         }
+
+
+        [HttpGet("getStatistics")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetStatistics()
+        {
+            var userId = User.Identity?.Name;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var statistics = await _todoRepo.GetTodoStatistics(Int32.Parse(userId));
+            return Ok(statistics);
+        }
+
     }
 }
