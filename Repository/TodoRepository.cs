@@ -74,9 +74,10 @@ namespace backend.Repository
             return _mapper.Map<TodoGetDTO>(newTodo);
 
         }
-        public Task UpdateTodo(TodoUpdateDTO todoDTO)
+        public async Task<TodoGetDTO> UpdateTodo(TodoUpdateDTO todoDTO, int todoId)
         {
-            throw new NotImplementedException();
+            var todo = await _db.Todos.AsNoTracking().FirstOrDefaultAsync(todo => todo.Id == todoId);
+
         }
         public async Task<bool> DeleteTodo(int Id)
         {

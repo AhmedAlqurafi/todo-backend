@@ -97,6 +97,21 @@ namespace backend.Controllers
             }
         }
 
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateTodo([FromBody] TodoUpdateDTO updateTodo, int id)
+        {
+            var userIdClaim = User.Identity?.Name;
+            if (userIdClaim == null)
+            {
+                return Unauthorized(); ;
+            }
+
+
+            return Ok();
+        }
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -11,7 +11,7 @@ namespace backend.Repository.IRepository
         public Task<List<TodoGetDTO>> GetUserTodos(int userId);
         public Task<TodoGetDTO> GetTodoById(int todoId);
         public Task<TodoGetDTO> CreateTodo(TodoCreateDTO todoCreateDTO, int userId);
-        public Task UpdateTodo(TodoUpdateDTO todoDTO);
+        public Task<TodoGetDTO> UpdateTodo(TodoUpdateDTO updatedTodo, int todoId);
         public Task<bool> DeleteTodo(int Id);
 
         public Task<TodoGetDTO> UpdateStatusToInProgress(int Id);
