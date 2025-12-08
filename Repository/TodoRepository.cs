@@ -74,10 +74,21 @@ namespace backend.Repository
             return _mapper.Map<TodoGetDTO>(newTodo);
 
         }
-        public async Task<TodoGetDTO> UpdateTodo(TodoUpdateDTO todoDTO, int todoId)
+        public async Task<TodoGetDTO> UpdateTodo(TodoUpdateDTO updatedTodo, int todoId)
         {
             var todo = await _db.Todos.AsNoTracking().FirstOrDefaultAsync(todo => todo.Id == todoId);
+            if (todo == null)
+            {
+                return null!;
+            }
 
+            var updatedTodo = new Todo
+            {
+                Id = todo.Id,
+                UserId = todo.UserId,
+                Title = updatedTodo.Title,
+            };
+            _db.Update(updatedTodo);
         }
         public async Task<bool> DeleteTodo(int Id)
         {

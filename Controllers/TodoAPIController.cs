@@ -106,8 +106,10 @@ namespace backend.Controllers
             var userIdClaim = User.Identity?.Name;
             if (userIdClaim == null)
             {
-                return Unauthorized(); ;
+                return Unauthorized();
             }
+
+            var todo =
 
 
             return Ok();
