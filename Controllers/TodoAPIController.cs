@@ -109,10 +109,8 @@ namespace backend.Controllers
                 return Unauthorized();
             }
 
-            var todo =
-
-
-            return Ok();
+            var todo = await _todoRepo.UpdateTodo(updateTodo, id);
+            return Ok(todo);
         }
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

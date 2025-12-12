@@ -74,7 +74,7 @@ namespace backend.Repository
             return _mapper.Map<TodoGetDTO>(newTodo);
 
         }
-        public async Task<TodoGetDTO> UpdateTodo(TodoUpdateDTO updatedTodo, int todoId)
+        public async Task<TodoGetDTO> UpdateTodo(TodoUpdateDTO updatedTodoDTO, int todoId)
         {
             var todo = await _db.Todos.AsNoTracking().FirstOrDefaultAsync(todo => todo.Id == todoId);
             if (todo == null)
@@ -86,9 +86,22 @@ namespace backend.Repository
             {
                 Id = todo.Id,
                 UserId = todo.UserId,
-                Title = updatedTodo.Title,
+                Title = updatedTodoDTO.Title,
+                Details = updatedTodoDTO.Details,
+                PriorityId = updatedTodoDTO.PriorityId,
+                StatusId = updatedTodoDTO.StatusId,
+                CategoryId = updatedTodoDTO.CategoryId,
+                ImageURL = updatedTodoDTO.ImageURL,
+                Deadline = updatedTodoDTO.Deadline,
+                CreatedAt = todo.CreatedAt,
+                UpdatedAt = DateTime.Now,
             };
+
             _db.Update(updatedTodo);
+            await _db.SaveChangesAsync();
+
+            return _mapper.Map<TodoGetDTO>(updatedTodo);
+
         }
         public async Task<bool> DeleteTodo(int Id)
         {

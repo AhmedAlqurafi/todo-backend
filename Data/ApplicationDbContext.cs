@@ -29,4 +29,9 @@ public class ApplicationDbContext : DbContext
               }
                   );
     }
+
+    internal async Task SaveChangesAsync(Todo todo)
+    {
+        throw new NotImplementedException();
+    }
 }

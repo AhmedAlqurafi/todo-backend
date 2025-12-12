@@ -11,6 +11,7 @@ namespace backend
         {
             CreateMap<RegistrationRequestDTO, User>();
             CreateMap<Todo, TodoGetDTO>();
+            CreateMap<TodoUpdateDTO, TodoGetDTO>();
             CreateMap<Category, CategoryDTO>();
             CreateMap<CategoryDTO, Category>();
             // CreateMap<TodoCreateDTO, TodoDTO>();
