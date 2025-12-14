@@ -82,6 +82,10 @@ namespace backend.Repository
                 return null!;
             }
 
+            if (todo.StatusId == 3)
+            {
+                return null!;
+            }
             var updatedTodo = new Todo
             {
                 Id = todo.Id,
