@@ -19,12 +19,14 @@ namespace backend.Repository
         private readonly IMapper _mapper;
         private readonly ILogger<AuthRepository> _logger;
         private string? secretKey;
+        private double tokenTimeout;
         public AuthRepository(ApplicationDbContext db, IMapper mapper, ILogger<AuthRepository> logger, IConfiguration conf)
         {
             _db = db;
             _mapper = mapper;
             _logger = logger;
             secretKey = conf.GetValue<string>("AppSettings:Secret");
+            tokenTimeout = conf.GetValue<int>("AppSettings:TokenTimeout");
         }
 
         public bool IsUniqueUser(RegistrationRequestDTO registrationRequestDTO)
@@ -64,7 +66,7 @@ namespace backend.Repository
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddSeconds(tokenTimeout),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -107,7 +109,7 @@ namespace backend.Repository
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddSeconds(tokenTimeout),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
